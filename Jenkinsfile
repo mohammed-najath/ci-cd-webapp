@@ -1,6 +1,9 @@
 pipeline{
 	agent any
+parameters{
 
+	booleanParam(name: 'RUN_FAILURE',defaultValue: false,description:'Run Failure Sceanrio?')
+}
 //Runs every 7 days
 triggers{
 	cron('H H * * 0')
@@ -15,21 +18,27 @@ stages{
 
 	stage('Build'){
 		steps{
-			bat 'mvn clean install'
+			echo 'compiling Java program....'
+			bat 'javac HelloApp.java'
 	}
 	}
 
 
-	stage('Test'){
+	stage('Test -Positive Scenario'){
 		steps{
-			bat 'mvn test'
+			echo 'Running Hello App Java program with Success Scenario....'
+			bat 'java HelloApp'
 	}
 	}
 
-	stage('Deploy'){
+	stage('Test - Faliure Scenario'){
+
+		when{
+			expression{ return params.RUN_FAILURE}
+				}
 		steps{
-			echo 'Deploying application......'
-	}
+			echo 'Running Hello App Java program with Failure Scenario....'
+			bat 'java HelloApp fail'
 	}
 }
 
