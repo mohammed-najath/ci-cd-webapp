@@ -9,12 +9,6 @@ triggers{
 	cron('H H * * 0')
 }
 stages{
-	stage('Checkout Code'){
-		steps{
-			git branch:'master',url:'https://github.com/mohammed-najath/ci-cd-webapp.git'
-	}
-	}
-
 
 	stage('Build'){
 		steps{
@@ -34,12 +28,13 @@ stages{
 	stage('Test - Faliure Scenario'){
 
 		when{
-			expression{ return params.RUN_FAILURE}
+			expression{params.RUN_FAILURE}
 				}
 		steps{
 			echo 'Running Hello App Java program with Failure Scenario....'
 			bat 'java HelloApp fail'
 	}
+}
 }
 
 
