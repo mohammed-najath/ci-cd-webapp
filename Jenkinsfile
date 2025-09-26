@@ -35,6 +35,18 @@ stages{
 			bat 'java HelloApp fail'
 	}
 }
+
+	stage('Generate Report'){
+
+		steps{
+		echo 'Generating report...'
+		bat '''
+			echo ======= CI/CD Report ======= > report.txt
+			echo Build Date: %DATE% %TIME% >> report.txt
+			echo Status : SUCCESS >> report.txt '''
+		archiveArtifacts artifacts: 'report.txt', fingerprint:true
+}
+}
 }
 
 
